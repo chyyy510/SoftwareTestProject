@@ -16,19 +16,66 @@ client = OpenAI(
 # 代码解析模块
 def parse_code(source_code):
     """
-    解析代码中的函数定义，返回函数的名称、参数列表和返回值类型。
+    解析代码中的函数定义，返回函数的名称、参数列表、返回值类型、装饰器、文档字符串等信息。
     """
+    # 解析源代码为 AST 树
     tree = ast.parse(source_code)
     function_definitions = []
+
     for node in ast.walk(tree):
+        # 只处理函数定义的节点
         if isinstance(node, ast.FunctionDef):
-            function_definitions.append(
-                {
-                    "name": node.name,
-                    "args": [arg.arg for arg in node.args.args],
-                    "returns": node.returns,
-                }
-            )
+            function_info = {
+                "name": node.name,  # 函数名称
+                "args": [],  # 参数列表
+                "returns": None,  # 返回类型注解
+                "decorators": [],  # 装饰器列表
+                "docstring": ast.get_docstring(node),  # 文档字符串
+                "default_args": [],  # 默认参数列表
+                "arg_types": [],  # 参数类型注解
+            }
+
+            # 获取参数列表
+            for arg in node.args.args:
+                arg_info = {"name": arg.arg}
+
+                # 获取每个参数的默认值（如果有的话）
+                if arg.arg in [d.arg for d in node.args.defaults]:
+                    default_value = node.args.defaults[node.args.args.index(arg)]
+                    arg_info["default"] = default_value
+                else:
+                    arg_info["default"] = None
+
+                # 获取每个参数的类型注解（如果有的话）
+                if arg.annotation:
+                    arg_info["type"] = arg.annotation
+                else:
+                    arg_info["type"] = None
+
+                function_info["args"].append(arg_info)
+
+            # 获取返回类型注解
+            if node.returns:
+                function_info["returns"] = node.returns
+
+            # 获取函数的装饰器（如果有的话）
+            if node.decorator_list:
+                function_info["decorators"] = [
+                    decorator.id if isinstance(decorator, ast.Name) else str(decorator)
+                    for decorator in node.decorator_list
+                ]
+
+            # 获取函数的默认参数值（如果有的话）
+            function_info["default_args"] = [
+                (arg.arg, ast.dump(default))
+                for arg, default in zip(
+                    node.args.args[-len(node.args.defaults) :], node.args.defaults
+                )
+            ]
+
+            # 将函数信息添加到结果列表
+            function_definitions.append(function_info)
+
     return function_definitions
 
 
