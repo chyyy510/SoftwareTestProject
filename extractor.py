@@ -33,8 +33,8 @@ class ConditionVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-def extract_conditions(func_code):
-    tree = ast.parse(func_code)
+def extract_conditions(ast_tree):
+    # tree = ast.parse(func_code)
     visitor = ConditionVisitor()
-    visitor.visit(tree)
+    visitor.visit(ast_tree)
     return visitor.conditions
