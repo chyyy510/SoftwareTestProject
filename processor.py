@@ -1,7 +1,7 @@
 from collections import defaultdict
 import itertools
 import os
-from parser import parse_constraints
+from myparser import parse_constraints
 import random
 
 from combiner import generate_combinations
