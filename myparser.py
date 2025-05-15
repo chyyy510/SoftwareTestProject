@@ -4,20 +4,22 @@ op_map = {"Gt": ">", "Eq": "==", "Lt": "<", "GtE": ">=", "LtE": "<=", "NotEq": "
 
 
 def parse_node(node_str):
+    # 处理常量
     if "Constant" in node_str:
-        # 处理常量，可以进一步判断是字符串常量还是数字常量
         value_str = node_str.split("value=")[1].split(")")[0]
         # 判断常量的类型是否为字符串
         if '"' in value_str or "'" in value_str:
             return Cst(value_str.strip("'").strip('"'))  # 返回字符串常量
         else:
             return Cst(eval(value_str))  # 返回数字常量
-    else:
-        # 处理变量名
+    # 处理变量，改进判断逻辑，支持简单变量格式（如 'x' 或 'y'）
+    elif "id='" in node_str:
         id_part = node_str.split("id='")[1]
         id_name = id_part.split("'")[0]
         return Var(id_name)
-
+    else:
+        # 对于没有 'id=' 的变量字符串，直接返回变量名
+        return Var(node_str.strip())
 
 def parse_constraints(raw_constraints):
     parsed = []

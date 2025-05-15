@@ -3,7 +3,9 @@ import random
 
 
 def add(a, b):
-    return a + b
+    if not x:
+        x+=1
+    return a + b >10
 
 
 def multiply(x, y=2):
@@ -19,4 +21,10 @@ def relu_prime(x):
     bottom_diff=np.where(x > 0, 1, 0)
     return bottom_diff
 
-
+def check_sign(x):
+    if x > 0:
+        return "positive"
+    elif x < 0:
+        return "negative"
+    else:
+        return "zero"

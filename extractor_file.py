@@ -1,9 +1,3 @@
-"""
-该代码的核心功能是从一个 Python 源代码的 AST 中提取出条件表达式(if)和循环(for,while)的迭代部分，
-同时还能够提取函数的参数信息。
-提取的条件表达式包含了比较操作符(><=)和涉及的变量或常量。
-"""
-
 import ast
 import sys
 from pathlib import Path
@@ -42,6 +36,8 @@ class ConditionVisitor(ast.NodeVisitor):
             # 将 return 表达式转换为可读字符串
             return_expr = ast.unparse(node.value)
             self.returns.append(return_expr)
+            #if isinstance(node, ast.Compare):
+            #self.extract_condition(node.value)
         self.generic_visit(node)
 
     def extract_condition(self, condition):
@@ -49,24 +45,15 @@ class ConditionVisitor(ast.NodeVisitor):
         # 处理比较表达式（如 x > 0）
         if isinstance(condition, ast.Compare):  
             left = ast.unparse(condition.left)
-            op = self.get_operator(condition.ops[0])
+            op = type(condition.ops[0]).__name__
             right = ast.unparse(condition.comparators[0])
             self.conditions.append((left, op, right))
         # 处理 not 表达式：递归解析其操作数并添加 not 标记
         elif isinstance(condition, ast.UnaryOp) and isinstance(condition.op, ast.Not):
             operand = self._extract_operand(condition.operand)
-            # 如果是比较表达式，加入 not 逻辑
-            if isinstance(operand, tuple):
-                left, op, right = operand
-                if op == "lt":
-                    op = "Gt"  # 反转比较符号
-                elif op == "gt":
-                    op = "Lt"
-                elif op == "eq":
-                    op = "not eq"  # 特殊情况处理
-                self.conditions.append((left, "not", right))
-            else:
-                self.conditions.append((operand, "not", ""))
+            # self.conditions.append(f"not ({operand})")
+            self.conditions.append((operand[0], "not", operand[2]))
+
         # 处理 and/or
         elif isinstance(condition, ast.BoolOp):  
             for sub_cond in condition.values:
@@ -75,33 +62,80 @@ class ConditionVisitor(ast.NodeVisitor):
         elif isinstance(condition, ast.Name):    
             self.conditions.append((condition.id, "is used", ""))
 
-    def get_operator(self, op_node):
-        """辅助方法：获取操作符的字符串表示"""
-        if isinstance(op_node, ast.Lt):
-            return "Lt"
-        elif isinstance(op_node, ast.Gt):
-            return "Gt"
-        elif isinstance(op_node, ast.Eq):
-            return "eq"
-        elif isinstance(op_node, ast.NotEq):
-            return "not eq"
-        elif isinstance(op_node, ast.LtE):
-            return "LtE"
-        elif isinstance(op_node, ast.GtE):
-            return "GtE"
-        return ""
-
     def _extract_operand(self, condition):
         """辅助方法：提取操作数的字符串表示"""
         if isinstance(condition, ast.Compare):
             left = ast.unparse(condition.left)
-            op = self.get_operator(condition.ops[0])
+            op = type(condition.ops[0]).__name__
             right = ast.unparse(condition.comparators[0])
             return (left, op, right)
-        return ast.unparse(condition)
-
+        return (ast.unparse(condition), "", "")
 
 def extract_conditions(ast_tree):
     visitor = ConditionVisitor()
     visitor.visit(ast_tree)
-    return visitor.conditions
+    return {
+        "functions": [{
+            "function_name": visitor.function_name,
+            "params": visitor.params,
+            "conditions": visitor.conditions,
+            "return_exprs": visitor.returns
+        }]
+    }
+
+
+
+def analyze_file(file_path):
+    """分析 Python 文件"""
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            code = f.read()
+        tree = ast.parse(code)
+        
+        # 分析整个文件
+        visitor = ConditionVisitor()
+        visitor.visit(tree)
+
+        # 汇总所有函数的信息
+        results = []
+        for func in visitor.params:
+            results.append({
+                "function_name": visitor.function_name,
+                "params": visitor.params,
+                "conditions": visitor.conditions,
+                "return_exprs": visitor.returns
+            })
+        
+        return results
+    
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def main():
+    """命令行入口"""
+    if len(sys.argv) < 2:
+        print("Usage: python ast_analyzer.py <python_file>")
+        print("Example: python ast_analyzer.py example.py")
+        return
+    
+    file_path = sys.argv[1]
+    
+    result = analyze_file(file_path)
+    
+    if isinstance(result, str):
+        print(result)  # 打印错误信息
+    else:
+            print("\n=== 分析结果 ===")
+            for func in result:
+                print(f"\n函数名称: {func['function_name']}")
+                print(f"参数列表: {', '.join(func['params'])}")
+                print("\n条件表达式:")
+                for left, op, right in func['conditions']:
+                    print(f" {left} {op} {right}")
+
+                print("\nReturn 表达式:")
+                for expr in func['return_exprs']:
+                    print(f" {expr}")
+
+if __name__ == "__main__":
+    main()

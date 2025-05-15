@@ -5,7 +5,7 @@ import os
 
 from processor import generate_for_function
 
-file_path = "samples/test.py"
+file_path = "samples/myfun.py"
 if not os.path.exists(file_path):
     print(f"文件 {file_path} 不存在。")
 
