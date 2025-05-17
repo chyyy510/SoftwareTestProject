@@ -14,8 +14,11 @@ def group_constraints(constraints):
             raise TypeError(
                 f"Expected a self-defined Expression for right, got {type(right)}"
             )
+        # 判断左边和右边是不是变量
         if isinstance(left, Var):
             var_constraints[left.value].append((left, op, right))
+
         if isinstance(right, Var):
             var_constraints[right.value].append((left, op, right))
+            
     return var_constraints

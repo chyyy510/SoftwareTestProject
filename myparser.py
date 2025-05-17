@@ -1,6 +1,6 @@
 from models import Cst, Var
 
-op_map = {"Gt": ">", "Eq": "==", "Lt": "<", "GtE": ">=", "LtE": "<=", "NotEq": "!="}
+op_map = {"Gt": ">", "Eq": "==", "Lt": "<", "GtE": ">=", "LtE": "<=", "Not Eq": "!="}
 
 
 def parse_node(node_str):
