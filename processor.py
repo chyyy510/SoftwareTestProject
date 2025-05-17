@@ -5,7 +5,7 @@ from myparser import parse_constraints
 import random
 
 from combiner import generate_combinations
-from extractor import extract_conditions
+from extractor import extract_conditions, ConditionVisitor  # filepath: c:\Users\25876\SoftwareTestProject\processor.py
 from generator import generate_test_cases
 from grouper import group_constraints
 from models import Cst, Var
@@ -30,7 +30,10 @@ def generate_for_function(func_ast):
         print(f"Variable: {var}")
         for left, op, right in conditions:
             print(f"  {left} {op} {right}")
-    test_cases = generate_test_cases(grouped_constraints)
+    visitor = ConditionVisitor()
+    visitor.visit(func_ast)
+    params = visitor.params  # 获取参数名列表
+    test_cases = generate_test_cases(grouped_constraints, params)
     print("\n满足条件的测试样例：")
     for var, case in test_cases.items():
         print(var, " ", case)

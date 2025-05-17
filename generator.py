@@ -4,7 +4,7 @@ import random
 from models import Cst, Var
 
 
-def generate_test_cases(grouped_constraints):
+def generate_test_cases(grouped_constraints, params=None):
 
     # 基于变量的约束生成测试样例
     print("\n基于每个变量的测试样例：")
@@ -41,6 +41,12 @@ def generate_test_cases(grouped_constraints):
                     test_cases[var].append(value)
                     test_cases[var].append(value - 1)
                     test_cases[var].append(value + 1)
+    # 对没有约束的参数补充随机样例
+    if params:
+        for param in params:
+            if param not in test_cases:
+                # 生成4个不同的随机整数样例
+                test_cases[param] = random.sample(range(-100, 100), 4)             
     for key in test_cases:
         test_cases[key] = list(set(test_cases[key]))
 
