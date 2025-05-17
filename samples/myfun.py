@@ -5,5 +5,4 @@ def my_function(x, y):
                 y -= 1
     if not x:
         x+=1
-                
     return x + y > 0

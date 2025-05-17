@@ -38,8 +38,13 @@ def parse_node(node_str):
 
 def parse_constraints(raw_constraints):
     parsed = []
-    for left, op, right in raw_constraints:
+    for item in raw_constraints:
+        if len(item) == 4:
+            left, op, right, cond_type = item
+        else:
+            left, op, right = item
+            cond_type = "var"
         left_var = parse_node(left)
         right_var = parse_node(right)
-        parsed.append((left_var, op_map.get(op, op), right_var))
+        parsed.append((left_var, op_map.get(op, op), right_var, cond_type))
     return parsed
