@@ -25,8 +25,6 @@ export default {
   padding-top: 100px;
   text-align: center;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1 {
