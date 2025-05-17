@@ -54,26 +54,40 @@ class ConditionVisitor(ast.NodeVisitor):
             self.conditions.append((left, op, right))
         # 处理 not 表达式：递归解析其操作数并添加 not 标记
         elif isinstance(condition, ast.UnaryOp) and isinstance(condition.op, ast.Not):
-            operand = self._extract_operand(condition.operand)
-            # 如果是比较表达式，加入 not 逻辑
-            if isinstance(operand, tuple):
-                left, op, right = operand
-                if op == "lt":
-                    op = "Gt"  # 反转比较符号
-                elif op == "gt":
-                    op = "Lt"
-                elif op == "eq":
-                    op = "not eq"  # 特殊情况处理
-                self.conditions.append((left, "not", right))
+            operand = condition.operand
+            if isinstance(operand, ast.Compare):  # 如果操作数是比较表达式
+                left = ast.unparse(operand.left)
+                op = self.get_operator(operand.ops[0])
+                right = ast.unparse(operand.comparators[0])
+                # 反转比较操作符
+                negated_op = self.negate_operator(op)
+                self.conditions.append((left, negated_op, right))
+            elif isinstance(operand, ast.Name):  # 如果操作数是简单变量
+                # 将 `not x` 解析为 `x == 0`
+                self.conditions.append((operand.id, "eq", "0"))
             else:
-                self.conditions.append((operand, "not", ""))
+                # 递归处理其他情况
+                self.extract_condition(operand)
         # 处理 and/or
         elif isinstance(condition, ast.BoolOp):  
             for sub_cond in condition.values:
                 self.extract_condition(sub_cond)
         # 处理简单变量（如 if x:）        
         elif isinstance(condition, ast.Name):    
-            self.conditions.append((condition.id, "is used", ""))
+            # 将 `if x:` 解析为 `x != 0`
+            self.conditions.append((condition.id, "not eq", "0"))
+
+    def negate_operator(self, op):
+        """辅助方法：反转比较操作符"""
+        negations = {
+            "Lt": "GtE",
+            "Gt": "LtE",
+            "LtE": "Gt",
+            "GtE": "Lt",
+            "eq": "not eq",
+            "not eq": "eq"
+        }
+        return negations.get(op, "")
 
     def get_operator(self, op_node):
         """辅助方法：获取操作符的字符串表示"""
