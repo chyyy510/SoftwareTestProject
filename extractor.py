@@ -83,7 +83,7 @@ class ConditionVisitor(ast.NodeVisitor):
                         left = ast.unparse(left_node)
                         self.conditions.append((left, negated_op, right, "other"))
                 elif isinstance(operand, ast.Name):
-                    self.conditions.append((operand.id, "eq", "0", "var"))
+                    self.conditions.append((operand.id, "Eq", "0", "var"))
                 else:
                     self.extract_condition(operand)
             # 处理 and/or
@@ -92,7 +92,7 @@ class ConditionVisitor(ast.NodeVisitor):
                     self.extract_condition(sub_cond)
             # 处理简单变量（如 if x:）        
             elif isinstance(condition, ast.Name):
-                self.conditions.append((condition.id, "not eq", "0", "var"))
+                self.conditions.append((condition.id, "Not Eq", "0", "var"))
         except Exception as e:
             print(f"提取条件时发生异常: {e}. 条件: {condition}")
 
@@ -103,8 +103,8 @@ class ConditionVisitor(ast.NodeVisitor):
             "Gt": "LtE",
             "LtE": "Gt",
             "GtE": "Lt",
-            "eq": "not eq",
-            "not eq": "eq"
+            "Eq": "Not Eq",
+            "Not Eq": "Eq"
         }
         return negations.get(op, "")
 
@@ -115,9 +115,9 @@ class ConditionVisitor(ast.NodeVisitor):
         elif isinstance(op_node, ast.Gt):
             return "Gt"
         elif isinstance(op_node, ast.Eq):
-            return "eq"
+            return "Eq"
         elif isinstance(op_node, ast.NotEq):
-            return "not eq"
+            return "Not Eq"
         elif isinstance(op_node, ast.LtE):
             return "LtE"
         elif isinstance(op_node, ast.GtE):
