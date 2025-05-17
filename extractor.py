@@ -137,4 +137,5 @@ class ConditionVisitor(ast.NodeVisitor):
 def extract_conditions(ast_tree):
     visitor = ConditionVisitor()
     visitor.visit(ast_tree)
+
     return visitor.conditions  # 现在返回四元组

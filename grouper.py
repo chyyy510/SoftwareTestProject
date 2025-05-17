@@ -5,6 +5,7 @@ from models import Cst, Expr, Var
 
 def group_constraints(constraints):
     var_constraints = defaultdict(list)
+
     expr_constraints = []
     for item in constraints:
         if len(item) == 4:
