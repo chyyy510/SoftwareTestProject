@@ -1,11 +1,12 @@
+import argparse
 import ast
 import os
-import argparse
+
 from processor import generate_for_function
 
 # 设置命令行参数解析器
 parser = argparse.ArgumentParser(description="解析并生成函数样例")
-parser.add_argument('file_path', type=str, help="Python 文件的路径，包含函数定义")
+parser.add_argument("file_path", type=str, help="Python 文件的路径，包含函数定义")
 args = parser.parse_args()
 
 file_path = args.file_path

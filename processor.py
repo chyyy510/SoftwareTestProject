@@ -1,14 +1,16 @@
 from collections import defaultdict
 from itertools import product
 import os
-from myparser import parse_constraints
 import random
 
 from combiner import generate_combinations
-from extractor import extract_conditions, ConditionVisitor  # filepath: c:\Users\25876\SoftwareTestProject\processor.py
+from extractor import (  # filepath: c:\Users\25876\SoftwareTestProject\processor.py
+    ConditionVisitor,
+    extract_conditions,
+)
 from generator import generate_test_cases
 from grouper import group_constraints
-from models import Cst, Var
+from myparser import parse_constraints
 
 
 def generate_for_function(func_ast):

@@ -1,6 +1,7 @@
 import ast
 import json
 import os
+import re
 import time
 
 from dotenv import load_dotenv
@@ -126,7 +127,16 @@ def test_local_file_directly(file_path):
                 raw_content = raw_content[7:]  # 去掉开头的 ```json
             if raw_content.endswith("```"):
                 raw_content = raw_content[:-3]  # 去掉结尾的 ```
-
+            # 清洗json
+            # 替换 np.array 为 Python 列表
+            # 先替换 np.array(...)
+            raw_content = re.sub(
+                r"np\.array\((.*?)\)", r"\1", raw_content, flags=re.DOTALL
+            )
+            # 再替换 np.matrix(...)
+            raw_content = re.sub(
+                r"np\.matrix\((.*?)\)", r"\1", raw_content, flags=re.DOTALL
+            )
             # 使用 json.loads 解析 JSON 格式
             test_cases = json.loads(raw_content)
         except Exception as e:

@@ -6,7 +6,7 @@ op_map = {"Gt": ">", "Eq": "==", "Lt": "<", "GtE": ">=", "LtE": "<=", "Not Eq": 
 def parse_node(node_str):
     try:
         # 判断是否为数字常量
-        if node_str.isdigit() or (node_str.startswith('-') and node_str[1:].isdigit()):
+        if node_str.isdigit() or (node_str.startswith("-") and node_str[1:].isdigit()):
             return Cst(int(node_str))  # 返回整数常量
         # 判断是否为浮点数常量
         try:
@@ -35,6 +35,7 @@ def parse_node(node_str):
     except Exception as e:
         print(f"解析节点时发生异常: {e}. 输入: {node_str}")
         return None  # 或者抛出自定义异常
+
 
 def parse_constraints(raw_constraints):
     parsed = []
