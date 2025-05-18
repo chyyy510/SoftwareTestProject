@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useResultStore = defineStore("result", {
   state: () => ({
-    resultData: null,
+    resultData: {},
   }),
   actions: {
     setResult(data) {

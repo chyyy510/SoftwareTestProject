@@ -58,4 +58,6 @@ def generate_for_function(func_ast):
     ret["total"] = len(combinations)
     for combo in combinations:
         print(combo)
+
+    ret["final"] = [combo for combo in combinations]
     return ret

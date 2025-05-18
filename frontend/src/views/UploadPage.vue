@@ -42,6 +42,7 @@ export default {
     //const responseMessage = ref(null);
     const codeContent = ref("# Write some Python code here...");
     const router = useRouter();
+    const resultStore = useResultStore();
     const handleFileUpload = (event) => {
       const file = event.target.files[0];
       if (!file || file.type !== "text/x-python") {
@@ -65,8 +66,9 @@ export default {
           body: formData,
         });
         const data = await res.json();
-
+        console.log(JSON.stringify(data, null, 2));
         // 切换到新页面，比如跳转到 /result
+        resultStore.setResult(data);
         router.push("/result");
       } catch (e) {
         alert("上传失败");
@@ -85,11 +87,9 @@ export default {
         console.log(JSON.stringify(data, null, 2));
         //responseMessage.value = JSON.stringify(data, null, 2);
 
-        if (data.success) {
-          // 切换到新页面，比如跳转到 /result
-          resultStore.setResult(data);
-          router.push("/result");
-        }
+        // 切换到新页面，比如跳转到 /result
+        resultStore.setResult(data);
+        router.push("/result");
       } catch (e) {
         alert("提交失败");
       }
