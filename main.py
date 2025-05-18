@@ -30,6 +30,7 @@ try:
     for func_ast in ast.walk(ast_tree):
         if isinstance(func_ast, ast.FunctionDef):
             print(f"\n为函数 {func_ast.name} 生成样例：")
-            generate_for_function(func_ast)
+            ret = generate_for_function(func_ast)
+            # print(ret)
 except Exception as e:
     print(f"解析 AST 或生成样例时发生异常: {e}")

@@ -14,17 +14,35 @@ from myparser import parse_constraints
 
 
 def generate_for_function(func_ast):
+
+    ret = {
+        "initial": [],
+        "parse": [],
+        "group": defaultdict(list),
+        "condition": {},
+        "final": {
+            "valid_combinations": [],
+            "all_combinations": [],
+        },
+        "info": {
+            "total_valid": 0,
+            "total_all": 0,
+        },
+    }
     raw_constraints = extract_conditions(func_ast)
     print("原始条件：")
     for c in raw_constraints:
+        ret["initial"].append(str(c))
         print(c)
     parsed_constraints = parse_constraints(raw_constraints)
     print("\n解析后条件：")
     for c in parsed_constraints:
+        ret["parse"].append(str(c))
         print(c)
     print("\n分组后约束：")
     grouped_constraints, expr_constraints = group_constraints(parsed_constraints)
     for var, conditions in grouped_constraints.items():
+        ret["group"][var] = [str(cond) for cond in conditions]
         print(var, conditions)
     visitor = ConditionVisitor()
     visitor.visit(func_ast)
@@ -33,6 +51,7 @@ def generate_for_function(func_ast):
     print("\n满足条件的测试样例：")
     for var in params:
         if var in test_cases:
+            ret["condition"][var] = sorted(test_cases[var])
             print(f"{var} {sorted(test_cases[var])}")
     combinations = generate_combinations(test_cases)
     # 用expr_constraints过滤组合
@@ -64,8 +83,12 @@ def generate_for_function(func_ast):
             filtered.append(combo)
     print("\n最终满足所有约束的测试样例：")
     for f in filtered:
+        ret["final"]["valid_combinations"] = filtered
+        ret["info"]["total_valid"] = len(filtered)
         print(f)
     if filtered:
+        ret["final"]["all_combinations"] = filtered
+        ret["info"]["total_all"] = len(filtered)
         print(f"总组合数：{len(filtered)}")
         for combo in filtered:
             print(combo)
@@ -75,5 +98,9 @@ def generate_for_function(func_ast):
         values_product = product(*(test_cases[k] for k in keys))
         all_combos = [dict(zip(keys, vals)) for vals in values_product]
         print(f"总组合数：{len(all_combos)}")
+        ret["final"]["all_combinations"] = all_combos
+        ret["info"]["total_all"] = len(all_combos)
         for combo in all_combos:
             print(combo)
+
+    return ret

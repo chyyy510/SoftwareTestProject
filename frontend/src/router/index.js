@@ -5,6 +5,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../views/HomePage.vue";
 import UploadPage from "../views/UploadPage.vue";
 import ResultPage from "../views/ResultPage.vue";
+import AboutPage from "../views/AboutPage.vue";
+import ContactPage from "../views/ContactPage.vue";
 
 const routes = [
   {
@@ -21,6 +23,16 @@ const routes = [
     path: "/result",
     name: "Result",
     component: ResultPage,
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: ContactPage,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: AboutPage,
   },
 ];
 

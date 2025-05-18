@@ -21,11 +21,6 @@
           <button @click="submitCode" class="pretty-button">提交代码</button>
         </div>
       </div>
-
-      <div v-if="responseMessage">
-        <h3>后端响应:</h3>
-        <pre>{{ responseMessage }}</pre>
-      </div>
     </div>
   </div>
 </template>
@@ -35,6 +30,7 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import AceEditor from "../components/AceEditor.vue"; // 路径根据你实际位置改
 import BASE_URL from "../config";
+import { useResultStore } from "../stores/resultStore";
 
 export default {
   components: {
@@ -43,7 +39,7 @@ export default {
   setup() {
     const isUploadMode = ref(true);
     const fileInput = ref(null);
-    const responseMessage = ref(null);
+    //const responseMessage = ref(null);
     const codeContent = ref("# Write some Python code here...");
     const router = useRouter();
     const handleFileUpload = (event) => {
@@ -69,14 +65,12 @@ export default {
           body: formData,
         });
         const data = await res.json();
-        responseMessage.value = JSON.stringify(data, null, 2);
 
-        if (data.success) {
-          // 切换到新页面，比如跳转到 /result
-          router.push("/result");
-        }
+        // 切换到新页面，比如跳转到 /result
+        router.push("/result");
       } catch (e) {
         alert("上传失败");
+        console.log(e);
       }
     };
 
@@ -88,10 +82,12 @@ export default {
           body: JSON.stringify({ code: codeContent.value }),
         });
         const data = await res.json();
-        responseMessage.value = JSON.stringify(data, null, 2);
+        console.log(JSON.stringify(data, null, 2));
+        //responseMessage.value = JSON.stringify(data, null, 2);
 
         if (data.success) {
           // 切换到新页面，比如跳转到 /result
+          resultStore.setResult(data);
           router.push("/result");
         }
       } catch (e) {
@@ -102,7 +98,7 @@ export default {
     return {
       isUploadMode,
       fileInput,
-      responseMessage,
+      //responseMessage,
       handleFileUpload,
       uploadFile,
       codeContent,
