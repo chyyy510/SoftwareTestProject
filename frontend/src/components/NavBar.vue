@@ -15,12 +15,12 @@
         </li>
         <li>
           <router-link to="/result" exact-active-class="active-link"
-            >生成结果</router-link
+            >人工代码生成结果</router-link
           >
         </li>
         <li>
           <router-link to="/about" exact-active-class="active-link"
-            >关于</router-link
+            >API接口生成结果</router-link
           >
         </li>
 

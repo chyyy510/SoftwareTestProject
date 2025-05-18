@@ -14,6 +14,8 @@ const isOpen = (funcName) => openFunctions.value[funcName];
 </script>
 
 <template>
+  <div class="background-container">
+  </div>
   <el-card class="result-card">
     <h2>🎯 测试生成结果</h2>
 
@@ -97,6 +99,12 @@ const isOpen = (funcName) => openFunctions.value[funcName];
   </el-card>
 </template>
 <style scoped>
+.background-container{
+  background-image: url('../assets/images/background/6.jpg'); /* 设置背景图片 */
+    background-size: cover; /* 背景图像填充整个容器 */
+    background-position: center; /* 背景图像居中 */
+    background-repeat: no-repeat; /* 禁止背景图像重复 */
+}
 .result-card {
   max-width: 900px;
   margin: 40px auto;
