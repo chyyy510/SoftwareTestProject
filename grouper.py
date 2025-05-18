@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from models import Cst, Expr, Var
-
+from generator import generate_test_cases
 
 def group_constraints(constraints):
     var_constraints = defaultdict(list)

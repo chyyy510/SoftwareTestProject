@@ -12,7 +12,15 @@ MAX_COMBINATIONS = 10000
 SAMPLE_SIZE = 100
 
 
-def generate_combinations(lists):
+def generate_combinations(test_cases):
+    from itertools import product
+    keys = list(test_cases.keys())
+    values = [test_cases[k] for k in keys]
+    combos = []
+    for prod in product(*values):
+        combos.append(dict(zip(keys, prod)))
+    return combos
+
     all_lists = list(lists.values())
 
     # 计算总组合数
@@ -44,3 +52,17 @@ def generate_combinations(lists):
             if len(result) >= sample_size:
                 break
         return result
+
+def add_matrix_params(test_cases, matrix_params, m_n_pairs):
+    """
+    为测试用例添加矩阵参数的随机值。
+    :param test_cases: 原始测试用例
+    :param matrix_params: 矩阵参数的名称列表
+    :param m_n_pairs: 每个矩阵参数对应的 (m, n) 值的列表
+    :return: 更新后的测试用例
+    """
+    for param in matrix_params:
+        for m, n in m_n_pairs:
+            arr = [[random.randint(-10, 10) for _ in range(n)] for _ in range(m)]
+            test_cases[param].append(arr)
+    return test_cases
