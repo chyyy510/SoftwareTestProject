@@ -1,11 +1,11 @@
 <template>
   <nav class="navbar">
     <div class="navbar-container">
-      <div class="logo">样例生成</div>
+      <div class="logo">软件测试导论大作业</div>
       <ul class="nav-links">
         <li>
           <router-link to="/" exact-active-class="active-link"
-            >首页</router-link
+            >主页</router-link
           >
         </li>
         <li>
