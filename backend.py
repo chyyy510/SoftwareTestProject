@@ -1,6 +1,5 @@
 import ast
 import json
-import os
 import re
 
 from flask import Flask, jsonify, request
@@ -20,9 +19,21 @@ client = OpenAI(
 )
 
 
+def parse_ai_response(raw_answer: str):
+    try:
+        # 把 Python 风格字符串（带有 None）变成 Python 对象
+        data = ast.literal_eval(raw_answer)
+    except Exception as e:
+        print("🛑 解析失败：", e)
+        return {"error": "Invalid format"}
+
+    # 然后再转成 JSON 格式，None → null
+    return data
+
+
 def analyze(code):
     """ours"""
-    response = {"ours": {}, "ai": {}}
+    response = {"ours": {}, "ai": {}, "ai_error": False, "ours_error": False}
 
     ast_tree = ast.parse(code)
     for func_ast in ast.walk(ast_tree):
@@ -66,24 +77,19 @@ def analyze(code):
         print("OpenAI 分析失败，未返回结果。")
         return None
 
+    answer = answer.get("result", "").strip()
     pattern = r"```json\s*(.*?)\s*```"
     match = re.search(pattern, answer, re.DOTALL)
     if not match:
         return None
     json_str = match.group(1)
 
-    """answer = answer.get("result", "").strip()
-    if answer.startswith("```json"):
-        answer = answer[7:]  # 去掉开头的 ```json
-    if answer.endswith("```"):
-        answer = answer[:-3]  # 去掉结尾的 ```
-    answer = re.sub(r"np\.array\((.*?)\)", r"\1", answer, flags=re.DOTALL)
-    answer = re.sub(r"np\.matrix\((.*?)\)", r"\1", answer, flags=re.DOTALL)
-    print("\n\n\n", answer, "\n\n\n")"""
-
-    # answer = json.loads(answer)
-    print("\n\n\n", json_str, "\n\n\n")
-    response["ai"] = json.load(json_str)
+    ret = parse_ai_response(json_str)
+    if "error" in ret:
+        response["ai"] = json_str
+        response["ai_error"] = True
+    else:
+        response["ai"] = ret
 
     return response
 

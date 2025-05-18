@@ -135,7 +135,10 @@ const isOpen = (funcName) => openFunctions.value[funcName];
 .result-card {
   max-width: 900px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 24px 30px;
+  background-color: #fff;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.1);
+  border-radius: 12px;
 }
 .func-block {
   margin-bottom: 30px;

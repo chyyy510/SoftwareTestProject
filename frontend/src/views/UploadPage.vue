@@ -41,7 +41,7 @@ export default {
     const isUploadMode = ref(true);
     const fileInput = ref(null);
     //const responseMessage = ref(null);
-    const codeContent = ref("# Write some Python code here...");
+    const codeContent = ref("# Write some Python code here...\n");
     const router = useRouter();
     const resultStore = useResultStore();
 
