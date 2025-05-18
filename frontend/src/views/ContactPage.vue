@@ -3,9 +3,7 @@
       <!--将fade in 应用到title-->
       <h1 class="title-fade-in">我们是软件测试导论4组</h1>
       <!--text-->
-      <p class="test-fade-in">
-        组员：<br> 陈红韵，徐赫昭，胡林敏
-        
+      <p class="text-fade-in">组员：<br> 陈红韵，徐赫昭，胡林敏
       </p>
        <!-- 使用 Flexbox 来并排显示图片和按钮 -->
         <div class="image-container">
@@ -31,13 +29,7 @@
     background-position: center; /* 背景图像居中 */
     background-repeat: no-repeat; /* 禁止背景图像重复 */
   }
-  .content-container {
-    display: flex;
-    align-items: center; /* 确保图片和按钮垂直居中 */
-    /*gap: -100px; /* 图片和按钮之间的间距 */
-    margin-top: 20px;
-    margin-left: -100px;
-  }
+
   /* 为标题设置动画 */
   .title-fade-in {
     opacity: 0;
