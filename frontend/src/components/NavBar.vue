@@ -5,29 +5,34 @@
       <ul class="nav-links">
         <li>
           <router-link to="/" exact-active-class="active-link"
-            >首页</router-link
-          >
+            >首页
+          </router-link>
         </li>
         <li>
           <router-link to="/upload" exact-active-class="active-link"
-            >上传代码</router-link
-          >
+            >上传代码
+          </router-link>
         </li>
         <li>
           <router-link to="/result" exact-active-class="active-link"
-            >生成结果</router-link
-          >
+            >生成结果
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/api" exact--active-class="active-link">
+            AI结果
+          </router-link>
         </li>
         <li>
           <router-link to="/about" exact-active-class="active-link"
-            >关于</router-link
-          >
+            >关于
+          </router-link>
         </li>
 
         <li>
           <router-link to="/contact" exact-active-class="active-link"
-            >联系我们</router-link
-          >
+            >联系我们
+          </router-link>
         </li>
       </ul>
     </div>

@@ -31,6 +31,7 @@ import { useRouter } from "vue-router";
 import AceEditor from "../components/AceEditor.vue"; // 路径根据你实际位置改
 import BASE_URL from "../config";
 import { useResultStore } from "../stores/resultStore";
+import { ElLoading } from "element-plus";
 
 export default {
   components: {
@@ -43,6 +44,7 @@ export default {
     const codeContent = ref("# Write some Python code here...");
     const router = useRouter();
     const resultStore = useResultStore();
+
     const handleFileUpload = (event) => {
       const file = event.target.files[0];
       if (!file || file.type !== "text/x-python") {
@@ -59,7 +61,10 @@ export default {
 
       const formData = new FormData();
       formData.append("file", file);
-
+      const loadingInstance = ElLoading.service({
+        fullscreen: true,
+        text: "上传中...",
+      });
       try {
         const res = await fetch(`${BASE_URL}/upload/file/`, {
           method: "POST",
@@ -73,10 +78,16 @@ export default {
       } catch (e) {
         alert("上传失败");
         console.log(e);
+      } finally {
+        loadingInstance.close();
       }
     };
 
     const submitCode = async () => {
+      const loadingInstance = ElLoading.service({
+        fullscreen: true,
+        text: "提交中...",
+      });
       try {
         const res = await fetch(`${BASE_URL}/upload/code/`, {
           method: "POST",
@@ -92,6 +103,8 @@ export default {
         router.push("/result");
       } catch (e) {
         alert("提交失败");
+      } finally {
+        loadingInstance.close();
       }
     };
 

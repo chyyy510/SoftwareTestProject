@@ -3,15 +3,20 @@
     <!--将fade in 应用到title-->
     <h1 class="title-fade-in">欢迎来到测试样例生成系统</h1>
     <!--text-->
-    <p class="text-fade-in">这是一个基于静态分析的 Python 代码测试样例生成系统，
-      <br>旨在帮助开发人员自动生成针对 Python 代码的各种测试样例。
-      <br>我们的系统能为您提供有力的支持，帮助您更轻松地进行开发和测试。
-      <br>点击以下按钮立即体验，提升您的开发效率！
+    <p class="text-fade-in">
+      这是一个基于静态分析的 Python 代码测试样例生成系统，
+      <br />旨在帮助开发人员自动生成针对 Python 代码的各种测试样例。
+      <br />我们的系统能为您提供有力的支持，帮助您更轻松地进行开发和测试。
+      <br />点击以下按钮立即体验，提升您的开发效率！
     </p>
-     <!-- 使用 Flexbox 来并排显示图片和按钮 -->
-     <div class="content-container">
+    <!-- 使用 Flexbox 来并排显示图片和按钮 -->
+    <div class="content-container">
       <div class="image-container">
-        <img src="../assets/images/cats/blue_cono.png" alt="示例图片" class="home-image" />
+        <img
+          src="../assets/images/cats/blue_cono.png"
+          alt="示例图片"
+          class="home-image"
+        />
       </div>
       <div class="button1-container">
         <router-link to="/upload">
@@ -42,7 +47,7 @@ export default {
   padding-top: 100px;
   text-align: center;
   min-height: 100vh;
-  background-image: url('../assets/images/background/6.jpg'); /* 设置背景图片 */
+
   background-size: cover; /* 背景图像填充整个容器 */
   background-position: center; /* 背景图像居中 */
   background-repeat: no-repeat; /* 禁止背景图像重复 */
@@ -73,7 +78,7 @@ export default {
 }
 
 /* 为 <p> 标签设置淡入动画 */
-  .text-fade-in {
+.text-fade-in {
   opacity: 0;
   transform: translateY(-20px); /* 让文字从上方滑入 */
   animation: fadeInText 1s ease-out forwards; /* 1秒钟的淡入动画 */
@@ -91,7 +96,7 @@ export default {
   }
 }
 
-/*人工代码分析*/ 
+/*人工代码分析*/
 .button1-container {
   margin-left: -10px; /* 为按钮容器添加左边距，控制与图片之间的距离 */
 }
@@ -105,7 +110,7 @@ h1 {
   margin-top: -250px;
   margin-bottom: 10px;
   color: #2600ae;
-  font-family: 'Roboto', sans-serif; /* 设置字体为 Roboto */
+  font-family: "Roboto", sans-serif; /* 设置字体为 Roboto */
 }
 
 p {
@@ -136,7 +141,7 @@ button:hover {
 /* 新增的图片样式 */
 .image-container {
   /*margin-bottom: 30px; /* 图片和按钮之间的间距 */
-  max-width: 185px;/* 限制最大宽度 */
+  max-width: 185px; /* 限制最大宽度 */
 }
 
 .home-image {
@@ -145,6 +150,4 @@ button:hover {
   height: auto; /* 保持图片比例 */
   border-radius: 8px; /* 可选，设置图片圆角 */
 }
-
-
 </style>
