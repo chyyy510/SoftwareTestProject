@@ -28,7 +28,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-
+  background-image: url('assets/images/background/6.jpg'); /* 替换为你图片的路径 */
+  background-size: cover; /* 确保图片覆盖整个页面 */
+  background-position: center center; /* 设置图片居中 */
+  background-attachment: fixed; /* 使背景图片固定，不随页面滚动 */
 }
 
 h1 {

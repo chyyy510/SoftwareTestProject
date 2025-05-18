@@ -20,12 +20,7 @@
       </div>
       <div class="button1-container">
         <router-link to="/upload">
-          <button>人工代码分析</button>
-        </router-link>
-      </div>
-      <div class="button2-container">
-        <router-link to="/upload">
-          <button>API接口分析</button>
+          <button>由此上传python文件</button>
         </router-link>
       </div>
     </div>
@@ -56,7 +51,7 @@ export default {
   display: flex;
   align-items: center; /* 确保图片和按钮垂直居中 */
   /*gap: -100px; /* 图片和按钮之间的间距 */
-  margin-top: 50px;
+  margin-top: 20px;
   margin-left: -100px;
 }
 /* 为标题设置动画 */
@@ -96,18 +91,15 @@ export default {
   }
 }
 
-/*人工代码分析*/
+/*由此上传python文件*/
 .button1-container {
   margin-left: -10px; /* 为按钮容器添加左边距，控制与图片之间的距离 */
 }
-/*API接口分析 */
-.button2-container {
-  margin-left: 20px; /* 为按钮容器添加左边距，控制与图片之间的距离 */
-}
+
 /*欢迎来到样例测试生成系统-*/
 h1 {
   font-size: 4rem;
-  margin-top: -250px;
+  margin-top: -180px;
   margin-bottom: 10px;
   color: #2600ae;
   font-family: "Roboto", sans-serif; /* 设置字体为 Roboto */
@@ -117,6 +109,7 @@ p {
   font-size: 1.2rem;
   margin-bottom: 30px;
   color: #6e3d3d;
+  line-height: 50px;
 }
 
 .button-group {
@@ -127,7 +120,7 @@ p {
 button {
   padding: 12px 24px;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 8px;
