@@ -42,10 +42,6 @@ export default {
   padding-top: 100px;
   text-align: center;
   min-height: 100vh;
-
-  background-size: cover; /* 背景图像填充整个容器 */
-  background-position: center; /* 背景图像居中 */
-  background-repeat: no-repeat; /* 禁止背景图像重复 */
 }
 .content-container {
   display: flex;
