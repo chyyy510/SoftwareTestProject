@@ -6,7 +6,6 @@ import HomePage from "../views/HomePage.vue";
 import UploadPage from "../views/UploadPage.vue";
 import ResultPage from "../views/ResultPage.vue";
 import ApiPage from "../views/ApiPage.vue";
-import AboutPage from "../views/AboutPage.vue";
 import ContactPage from "../views/ContactPage.vue";
 
 const routes = [
@@ -34,11 +33,6 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: ContactPage,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: AboutPage,
   },
 ];
 

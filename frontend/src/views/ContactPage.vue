@@ -10,7 +10,7 @@
     <!-- 使用 Flexbox 来并排显示图片和按钮 -->
     <div class="image-container">
       <img
-        src="../assets/images/cats/black_champ.png"
+        src="../assets/images/cats/blue_champ.png"
         alt="示例图片"
         class="home-image"
       />
